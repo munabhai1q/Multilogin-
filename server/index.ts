@@ -2,9 +2,6 @@ import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 
-// Set the OpenAI API key in process.env
-process.env.OPENAI_API_KEY = "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";
-
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

@@ -254,13 +254,13 @@ export default function HomePage() {
             <h1 className="text-xl font-bold bg-gradient-to-r from-red-600 to-blue-600 bg-clip-text text-transparent">SpiderBookmarks</h1>
           </div>
           <div className="flex items-center space-x-4">
-            {/* ChatGPT AI Button */}
+            {/* WebSense AI Button */}
             <button 
-              className="flex items-center px-3 py-1.5 rounded-full bg-gradient-to-r from-green-500 to-emerald-600 text-white text-sm font-medium hover:from-green-600 hover:to-emerald-700 transition-all shadow-lg"
+              className="flex items-center px-3 py-1.5 rounded-full bg-gradient-to-r from-red-500 to-blue-500 text-white text-sm font-medium hover:from-red-600 hover:to-blue-600 transition-all shadow-lg"
               onClick={() => setChatModalOpen(true)}
             >
               <MessageSquare className="w-4 h-4 mr-1.5" />
-              AI Assistant
+              WebSense AI
             </button>
             
             {/* User Menu */}
@@ -523,7 +523,7 @@ export default function HomePage() {
         onConfirm={handleDeleteBookmark}
       />
       
-      {/* ChatGPT AI Chat Modal */}
+      {/* WebSense AI Chat Modal (Ollama Integration) */}
       <ChatModal
         isOpen={chatModalOpen}
         onClose={() => setChatModalOpen(false)}

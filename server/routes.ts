@@ -181,7 +181,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // ChatGPT API endpoint
+  // Ollama AI Assistant endpoint
   app.post("/api/chat", async (req, res) => {
     if (!req.isAuthenticated()) return res.sendStatus(401);
     
@@ -197,10 +197,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Add user context to help with bookmark-related queries
       const userContext = {
         role: "system",
-        content: "You are a helpful assistant for SpiderBookmarks, a bookmark management application. The user is currently logged in and managing their bookmarks. Try to provide helpful responses related to bookmark organization, productivity tips, or general assistance."
+        content: "You are WebSense, an AI assistant for SpiderBookmarks, a bookmark management application. Your purpose is to help users organize their bookmarks efficiently and provide tips for better web browsing productivity. You have a friendly, helpful personality with a touch of Spider-Man themed humor. When appropriate, include Spider-Man references or web-related puns in your responses. Keep responses concise and focused on helping the user manage their digital web of bookmarks."
       };
       
       const allMessages = [userContext, ...messages];
+      
+      // Get response from Ollama
       const response = await getChatCompletion(allMessages);
       
       res.json(response);

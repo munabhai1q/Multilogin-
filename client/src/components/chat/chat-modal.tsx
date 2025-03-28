@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { X, Send, Loader2 } from 'lucide-react';
+import { X, Send, Loader2, AlertTriangle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
@@ -19,6 +19,7 @@ export function ChatModal({ isOpen, onClose }: ChatModalProps) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [ollmaStatus, setOllamaStatus] = useState<'unknown' | 'running' | 'not-running'>('unknown');
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
 
@@ -28,7 +29,7 @@ export function ChatModal({ isOpen, onClose }: ChatModalProps) {
       setMessages([
         {
           role: 'assistant',
-          content: 'Hi there! I\'m your SpiderBookmarks AI assistant. How can I help you with your bookmarks today?'
+          content: 'Hey there! I\'m WebSense, your friendly Spider-Bookmark AI assistant. With great power comes great organization! How can I help you manage your web of bookmarks today?'
         }
       ]);
     }
@@ -65,14 +66,37 @@ export function ChatModal({ isOpen, onClose }: ChatModalProps) {
           ...prev,
           { role: 'assistant', content: data.content }
         ]);
+        setOllamaStatus('running');
       } else {
-        toast({
-          title: 'Error',
-          description: data.error || 'Something went wrong. Please try again.',
-          variant: 'destructive',
-        });
+        // Add error response to chat but make it look nicer
+        setMessages(prev => [
+          ...prev,
+          { 
+            role: 'assistant', 
+            content: data.content || "I'm having trouble connecting to my brain right now. If you want to use the AI features, you'll need to install Ollama locally and run it. Visit ollama.com for instructions." 
+          }
+        ]);
+        setOllamaStatus('not-running');
+        
+        // Show toast only for unexpected errors
+        if (data.error && !data.error.includes("Failed to fetch") && !data.error.includes("Ollama API error")) {
+          toast({
+            title: 'Error',
+            description: data.error,
+            variant: 'destructive',
+          });
+        }
       }
     } catch (error) {
+      setMessages(prev => [
+        ...prev,
+        { 
+          role: 'assistant', 
+          content: "I'm having trouble connecting to my brain right now. If you want to use the AI features, you'll need to install Ollama locally and run it. Visit ollama.com for instructions."
+        }
+      ]);
+      setOllamaStatus('not-running');
+      
       toast({
         title: 'Connection Error',
         description: 'Failed to connect to the AI service. Please try again.',
@@ -90,8 +114,8 @@ export function ChatModal({ isOpen, onClose }: ChatModalProps) {
       <div className="relative w-full max-w-2xl max-h-[90vh] rounded-xl spiderman-card shadow-2xl flex flex-col overflow-hidden">
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-red-900/30">
-          <h2 className="text-xl font-bold bg-gradient-to-r from-green-500 to-emerald-600 bg-clip-text text-transparent">
-            SpiderBookmarks AI Assistant
+          <h2 className="text-xl font-bold bg-gradient-to-r from-red-500 to-blue-500 bg-clip-text text-transparent">
+            WebSense AI Assistant
           </h2>
           <Button
             variant="ghost"
@@ -115,7 +139,7 @@ export function ChatModal({ isOpen, onClose }: ChatModalProps) {
                 className={`max-w-[80%] rounded-lg p-3 ${
                   message.role === 'user'
                     ? 'bg-red-900/30 text-white rounded-tr-none'
-                    : 'bg-emerald-900/30 text-white rounded-tl-none'
+                    : 'bg-blue-900/30 text-white rounded-tl-none'
                 }`}
               >
                 <p className="whitespace-pre-wrap">{message.content}</p>
@@ -124,6 +148,16 @@ export function ChatModal({ isOpen, onClose }: ChatModalProps) {
           ))}
           <div ref={messagesEndRef} />
         </div>
+        
+        {/* Ollama Status Banner - Only show if not running */}
+        {ollmaStatus === 'not-running' && (
+          <div className="px-4 py-2 bg-yellow-900/30 border-t border-yellow-800 flex items-center">
+            <AlertTriangle className="h-4 w-4 text-yellow-500 mr-2" />
+            <p className="text-sm text-yellow-200">
+              To use AI features, install <a href="https://ollama.com" target="_blank" rel="noopener noreferrer" className="underline font-medium">Ollama</a> and run it locally
+            </p>
+          </div>
+        )}
         
         {/* Input area */}
         <div className="p-4 border-t border-gray-700/50">
@@ -142,7 +176,7 @@ export function ChatModal({ isOpen, onClose }: ChatModalProps) {
               disabled={isLoading}
             />
             <Button
-              className="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700"
+              className="bg-gradient-to-r from-red-500 to-blue-500 hover:from-red-600 hover:to-blue-600"
               onClick={handleSendMessage}
               disabled={isLoading || !input.trim()}
             >
