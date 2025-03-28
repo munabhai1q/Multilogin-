@@ -252,6 +252,37 @@ export default function HomePage() {
             <h1 className="text-xl font-bold bg-gradient-to-r from-red-600 to-blue-600 bg-clip-text text-transparent">SpiderBookmarks</h1>
           </div>
           <div className="flex items-center space-x-4">
+            {/* ChatGPT AI Button */}
+            <button 
+              className="flex items-center px-3 py-1.5 rounded-full bg-gradient-to-r from-green-500 to-emerald-600 text-white text-sm font-medium hover:from-green-600 hover:to-emerald-700 transition-all shadow-lg"
+              onClick={() => window.open('https://chat.openai.com', '_blank')}
+            >
+              <svg 
+                className="w-4 h-4 mr-1.5" 
+                viewBox="0 0 24 24" 
+                fill="none" 
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path 
+                  d="M9.5 3.5C6.5 3.5 4 6 4 9C4 10.793 4.85887 12.5784 6.5 13.5C6.5 14.7532 6.5 15.5 5.5 16.5C7.5 16.5 9.5 15.5 10.5 13.5C11.6298 13.5 12.5 13.5 13.5 13C16 11.8845 16.587 9.42859 16.5 7.5C16.2979 4.7522 13.2647 3.49591 11.5 3.5C10.8641 3.50118 10.1479 3.50118 9.5 3.5Z" 
+                  fill="currentColor" 
+                  stroke="currentColor" 
+                  strokeWidth="1.5" 
+                  strokeLinecap="round" 
+                  strokeLinejoin="round" 
+                />
+                <path 
+                  d="M14.501 10.5C14.501 9.5 16.1175 8.5 17.501 8.5C18.8844 8.5 20.501 9.5 20.501 11C20.501 12.5 19.3255 13.5 17.501 13.5C16.501 13.5 16.001 13 15.501 12" 
+                  stroke="currentColor" 
+                  strokeWidth="1.5" 
+                  strokeLinecap="round" 
+                  strokeLinejoin="round" 
+                />
+              </svg>
+              ChatGPT
+            </button>
+            
+            {/* User Menu */}
             <div className="relative">
               <button 
                 className="flex items-center space-x-1 text-sm focus:outline-none"
