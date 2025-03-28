@@ -5,6 +5,7 @@ import { insertBookmarkSchema, insertCategorySchema } from "@shared/schema";
 import { setupAuth } from "./auth";
 import { ZodError } from "zod";
 import { fromZodError } from "zod-validation-error";
+import { getChatCompletion } from "./openai";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Setup authentication routes
@@ -177,6 +178,38 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(200).json({ message: "Bookmark deleted successfully" });
     } else {
       res.status(500).json({ message: "Failed to delete bookmark" });
+    }
+  });
+
+  // ChatGPT API endpoint
+  app.post("/api/chat", async (req, res) => {
+    if (!req.isAuthenticated()) return res.sendStatus(401);
+    
+    try {
+      const { messages } = req.body;
+      
+      if (!messages || !Array.isArray(messages)) {
+        return res.status(400).json({ 
+          message: "Invalid request format. Expected an array of messages." 
+        });
+      }
+
+      // Add user context to help with bookmark-related queries
+      const userContext = {
+        role: "system",
+        content: "You are a helpful assistant for SpiderBookmarks, a bookmark management application. The user is currently logged in and managing their bookmarks. Try to provide helpful responses related to bookmark organization, productivity tips, or general assistance."
+      };
+      
+      const allMessages = [userContext, ...messages];
+      const response = await getChatCompletion(allMessages);
+      
+      res.json(response);
+    } catch (error) {
+      console.error("Chat API error:", error);
+      res.status(500).json({ 
+        message: "An error occurred while processing your request",
+        error: error instanceof Error ? error.message : "Unknown error"
+      });
     }
   });
 

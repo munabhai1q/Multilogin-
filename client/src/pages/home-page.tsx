@@ -10,8 +10,9 @@ import BookmarkCard from "@/components/bookmark/bookmark-card";
 import BookmarkModal from "@/components/bookmark/bookmark-modal";
 import CategoryModal from "@/components/bookmark/category-modal";
 import DeleteModal from "@/components/bookmark/delete-modal";
-import { Loader2, LogOut, Menu, Plus, Search } from "lucide-react";
+import { Loader2, LogOut, Menu, Plus, Search, MessageSquare } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { ChatModal } from "@/components/chat/chat-modal";
 
 export default function HomePage() {
   const { user, logoutMutation } = useAuth();
@@ -26,6 +27,7 @@ export default function HomePage() {
   const [bookmarkModalOpen, setBookmarkModalOpen] = useState(false);
   const [categoryModalOpen, setCategoryModalOpen] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [chatModalOpen, setChatModalOpen] = useState(false);
   const [currentBookmark, setCurrentBookmark] = useState<Bookmark | null>(null);
   const [bookmarkToDelete, setBookmarkToDelete] = useState<number | null>(null);
 
@@ -255,31 +257,10 @@ export default function HomePage() {
             {/* ChatGPT AI Button */}
             <button 
               className="flex items-center px-3 py-1.5 rounded-full bg-gradient-to-r from-green-500 to-emerald-600 text-white text-sm font-medium hover:from-green-600 hover:to-emerald-700 transition-all shadow-lg"
-              onClick={() => window.open('https://chat.openai.com', '_blank')}
+              onClick={() => setChatModalOpen(true)}
             >
-              <svg 
-                className="w-4 h-4 mr-1.5" 
-                viewBox="0 0 24 24" 
-                fill="none" 
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path 
-                  d="M9.5 3.5C6.5 3.5 4 6 4 9C4 10.793 4.85887 12.5784 6.5 13.5C6.5 14.7532 6.5 15.5 5.5 16.5C7.5 16.5 9.5 15.5 10.5 13.5C11.6298 13.5 12.5 13.5 13.5 13C16 11.8845 16.587 9.42859 16.5 7.5C16.2979 4.7522 13.2647 3.49591 11.5 3.5C10.8641 3.50118 10.1479 3.50118 9.5 3.5Z" 
-                  fill="currentColor" 
-                  stroke="currentColor" 
-                  strokeWidth="1.5" 
-                  strokeLinecap="round" 
-                  strokeLinejoin="round" 
-                />
-                <path 
-                  d="M14.501 10.5C14.501 9.5 16.1175 8.5 17.501 8.5C18.8844 8.5 20.501 9.5 20.501 11C20.501 12.5 19.3255 13.5 17.501 13.5C16.501 13.5 16.001 13 15.501 12" 
-                  stroke="currentColor" 
-                  strokeWidth="1.5" 
-                  strokeLinecap="round" 
-                  strokeLinejoin="round" 
-                />
-              </svg>
-              ChatGPT
+              <MessageSquare className="w-4 h-4 mr-1.5" />
+              AI Assistant
             </button>
             
             {/* User Menu */}
@@ -540,6 +521,12 @@ export default function HomePage() {
         isOpen={deleteModalOpen}
         onClose={() => setDeleteModalOpen(false)}
         onConfirm={handleDeleteBookmark}
+      />
+      
+      {/* ChatGPT AI Chat Modal */}
+      <ChatModal
+        isOpen={chatModalOpen}
+        onClose={() => setChatModalOpen(false)}
       />
     </div>
   );
