@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from "@/components/ui/dialog";
 
 interface CategoryModalProps {
   isOpen: boolean;
@@ -30,6 +30,9 @@ const CategoryModal = ({ isOpen, onClose, onSave }: CategoryModalProps) => {
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>Add New Category</DialogTitle>
+          <DialogDescription>
+            Create a new category to organize your bookmarks.
+          </DialogDescription>
         </DialogHeader>
         
         <form onSubmit={handleSubmit}>

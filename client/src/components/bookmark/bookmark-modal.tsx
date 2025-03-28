@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Bookmark, Category } from "@shared/schema";
 import { Eye, EyeOff } from "lucide-react";
@@ -53,7 +53,7 @@ const BookmarkModal = ({ isOpen, onClose, onSave, bookmark, categories }: Bookma
       url: urlWithProtocol,
       username,
       password,
-      categoryId: categoryId ? parseInt(categoryId) : undefined,
+      categoryId: categoryId ? parseInt(categoryId) : null,
     });
     
     resetForm();
@@ -67,6 +67,9 @@ const BookmarkModal = ({ isOpen, onClose, onSave, bookmark, categories }: Bookma
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>{bookmark ? "Edit Bookmark" : "Add New Bookmark"}</DialogTitle>
+          <DialogDescription>
+            {bookmark ? "Update your bookmark details below." : "Enter the details for your new bookmark."}
+          </DialogDescription>
         </DialogHeader>
         
         <form onSubmit={handleSubmit}>
@@ -148,7 +151,7 @@ const BookmarkModal = ({ isOpen, onClose, onSave, bookmark, categories }: Bookma
                   <SelectValue placeholder="Select Category" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">None</SelectItem>
+                  <SelectItem value="0">None</SelectItem>
                   {categories.map((category) => (
                     <SelectItem key={category.id} value={category.id.toString()}>
                       {category.name}
