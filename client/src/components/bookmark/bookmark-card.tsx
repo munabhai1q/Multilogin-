@@ -48,7 +48,14 @@ const BookmarkCard = ({ bookmark, category, onEdit, onDelete }: BookmarkCardProp
             </div>
           )}
         </div>
-        <p className="text-sm text-gray-500 truncate">{bookmark.url}</p>
+        <a 
+          href={bookmark.url}
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="text-sm text-blue-600 hover:underline truncate block"
+        >
+          {bookmark.url}
+        </a>
       </div>
       <div className="px-4 py-3 flex items-center justify-between">
         <div>
