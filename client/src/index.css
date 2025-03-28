@@ -8,6 +8,44 @@
   }
 
   body {
-    @apply font-sans antialiased bg-background text-foreground;
+    @apply font-sans antialiased text-foreground;
+    background-color: hsl(220, 60%, 10%);
+    background-image: 
+      radial-gradient(circle at 80% 20%, rgba(255, 0, 0, 0.15) 40%, transparent 70%),
+      radial-gradient(circle at 20% 70%, rgba(0, 60, 255, 0.15) 40%, transparent 70%),
+      url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M54.627,2.269c-0.602-0.602-1.707-0.438-2.174,0.38c-1.282,2.252-3.151,4.381-7.355,5.607 c-7.124,2.082-13.909,0.522-18.852-4.983c-0.911-1.017-2.064-0.315-2.266,0c-0.574,0.897-1.341,2.272-2.238,3.626 c-1.692,2.551-3.804,4.605-6.42,6.187c-3.547,2.147-12.605,6.925-13.611,15.944c-0.772,6.945,2.736,13.672,8.51,16.734 c4.443,2.357,7.527,3.132,11.025,5.031c8.133,4.423,10.284,12.581,6.925,20.022c-0.406,0.899,0.584,1.921,1.521,1.27 c10.121-7.03,20.591-16.307,27.224-26.947C55.38,33.171,65.273,12.915,54.627,2.269z M42.621,39.367 c-0.95,1.899-4.206,2.659-7.266,1.694c-3.066-0.963-4.769-3.274-3.825-5.173c0.95-1.899,4.206-2.659,7.266-1.694 C41.856,35.156,43.57,37.466,42.621,39.367z' fill='rgba(255, 255, 255, 0.025)'/%3E%3C/svg%3E");
+    background-size: cover, cover, 300px 300px;
+    background-position: center, center, center;
+    background-attachment: fixed;
   }
+}
+
+.spiderman-card {
+  background: linear-gradient(145deg, rgba(200, 20, 20, 0.2), rgba(10, 30, 90, 0.2));
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.spiderman-card-hover:hover {
+  box-shadow: 0 0 15px rgba(255, 0, 0, 0.5), 0 0 30px rgba(0, 0, 255, 0.15);
+  transform: translateY(-5px);
+  transition: all 0.3s ease;
+}
+
+.spiderman-web-border {
+  position: relative;
+}
+
+.spiderman-web-border::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,0 L20,20 M20,0 L0,20 M10,0 L10,20 M0,10 L20,10' stroke='rgba(255,255,255,0.05)' stroke-width='0.5'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1;
 }
