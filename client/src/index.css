@@ -49,3 +49,23 @@
   pointer-events: none;
   z-index: 1;
 }
+
+/* Custom scrollbar styling */
+.hide-scrollbar::-webkit-scrollbar {
+  height: 6px;
+  width: 6px;
+}
+
+.hide-scrollbar::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+}
+
+.hide-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(59, 130, 246, 0.3);
+  border-radius: 8px;
+}
+
+.hide-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(59, 130, 246, 0.5);
+}
