@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { X, Send, Loader2, AlertTriangle } from 'lucide-react';
+import { X, Send, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
@@ -19,7 +19,6 @@ export function ChatModal({ isOpen, onClose }: ChatModalProps) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [ollmaStatus, setOllamaStatus] = useState<'unknown' | 'running' | 'not-running'>('unknown');
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
 
@@ -66,17 +65,15 @@ export function ChatModal({ isOpen, onClose }: ChatModalProps) {
           ...prev,
           { role: 'assistant', content: data.content }
         ]);
-        setOllamaStatus('running');
       } else {
         // Add error response to chat but make it look nicer
         setMessages(prev => [
           ...prev,
           { 
             role: 'assistant', 
-            content: data.content || "I'm having trouble connecting to my brain right now. If you want to use the AI features, you'll need to install Ollama locally and run it. Visit ollama.com for instructions." 
+            content: data.content || "I'm having trouble responding right now. Please try again in a moment."
           }
         ]);
-        setOllamaStatus('not-running');
         
         // Show toast only for unexpected errors
         if (data.error && !data.error.includes("Failed to fetch") && !data.error.includes("Ollama API error")) {
@@ -92,10 +89,9 @@ export function ChatModal({ isOpen, onClose }: ChatModalProps) {
         ...prev,
         { 
           role: 'assistant', 
-          content: "I'm having trouble connecting to my brain right now. If you want to use the AI features, you'll need to install Ollama locally and run it. Visit ollama.com for instructions."
+          content: "I'm having trouble connecting right now. Please try again in a moment."
         }
       ]);
-      setOllamaStatus('not-running');
       
       toast({
         title: 'Connection Error',
@@ -148,16 +144,6 @@ export function ChatModal({ isOpen, onClose }: ChatModalProps) {
           ))}
           <div ref={messagesEndRef} />
         </div>
-        
-        {/* Ollama Status Banner - Only show if not running */}
-        {ollmaStatus === 'not-running' && (
-          <div className="px-4 py-2 bg-yellow-900/30 border-t border-yellow-800 flex items-center">
-            <AlertTriangle className="h-4 w-4 text-yellow-500 mr-2" />
-            <p className="text-sm text-yellow-200">
-              To use AI features, install <a href="https://ollama.com" target="_blank" rel="noopener noreferrer" className="underline font-medium">Ollama</a> and run it locally
-            </p>
-          </div>
-        )}
         
         {/* Input area */}
         <div className="p-4 border-t border-gray-700/50">
